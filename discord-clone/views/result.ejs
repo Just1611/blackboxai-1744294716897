@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado da Clonagem - Clonador de Servidor Discord</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-[#36393f] text-white font-[Inter]">
+    <nav class="bg-[#202225] p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <i class="fab fa-discord text-2xl"></i>
+                <span class="text-xl font-bold">Clonador de Servidor Discord</span>
+            </a>
+            <a href="/clone" class="text-gray-300 hover:text-white transition-colors">
+                <i class="fas fa-arrow-left mr-2"></i>
+                Voltar ao Clonador
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-2xl mx-auto">
+            <% if (success) { %>
+                <!-- Success State -->
+                <div class="bg-[#2f3136] rounded-lg p-6 mb-6">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-check text-2xl"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold text-center mb-6">Clonagem Concluída!</h1>
+                    
+                    <!-- Cloning Summary -->
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-6">
+                        <div class="bg-[#40444b] p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-[#5865F2]"><%= result.categories %></div>
+                            <div class="text-sm text-gray-300">Categorias</div>
+                        </div>
+                        <div class="bg-[#40444b] p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-[#5865F2]"><%= result.textChannels %></div>
+                            <div class="text-sm text-gray-300">Canais de Texto</div>
+                        </div>
+                        <div class="bg-[#40444b] p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-[#5865F2]"><%= result.voiceChannels %></div>
+                            <div class="text-sm text-gray-300">Canais de Voz</div>
+                        </div>
+                        <div class="bg-[#40444b] p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-[#5865F2]"><%= result.announceChannels %></div>
+                            <div class="text-sm text-gray-300">Canais de Anúncios</div>
+                        </div>
+                        <div class="bg-[#40444b] p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-[#5865F2]"><%= result.forumChannels %></div>
+                            <div class="text-sm text-gray-300">Canais de Fórum</div>
+                        </div>
+                        <div class="bg-[#40444b] p-4 rounded-lg text-center">
+                            <div class="text-2xl font-bold text-[#5865F2]"><%= result.stageChannels %></div>
+                            <div class="text-sm text-gray-300">Canais de Palco</div>
+                        </div>
+                        <div class="bg-[#40444b] p-4 rounded-lg text-center col-span-2 sm:col-span-3">
+                            <div class="text-2xl font-bold text-[#5865F2]"><%= result.emojis %></div>
+                            <div class="text-sm text-gray-300">Emojis Clonados</div>
+                        </div>
+                    </div>
+
+                    <% if (result.errors && result.errors.length > 0) { %>
+                        <div class="bg-[#40444b] p-4 rounded-lg mb-6">
+                            <h3 class="font-medium mb-2">Notas & Avisos:</h3>
+                            <ul class="list-disc list-inside text-yellow-400 text-sm space-y-1">
+                                <% result.errors.forEach(function(error) { %>
+                                    <li><%= error %></li>
+                                <% }); %>
+                            </ul>
+                        </div>
+                    <% } %>
+
+                    <div class="flex justify-center space-x-4">
+                        <a href="/clone" class="bg-[#5865F2] hover:bg-[#4752C4] px-6 py-3 rounded-md font-medium transition-colors">
+                            Clonar Outro Servidor
+                        </a>
+                        <a href="/" class="bg-[#40444b] hover:bg-[#36393f] px-6 py-3 rounded-md font-medium transition-colors">
+                            Voltar ao Início
+                        </a>
+                    </div>
+                </div>
+            <% } else { %>
+                <!-- Error State -->
+                <div class="bg-[#2f3136] rounded-lg p-6 mb-6">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-16 h-16 bg-red-500 rounded-full flex items-center justify-center">
+                            <i class="fas fa-times text-2xl"></i>
+                        </div>
+                    </div>
+                    <h1 class="text-3xl font-bold text-center mb-6">Falha na Clonagem</h1>
+                    
+                    <div class="bg-[#40444b] p-4 rounded-lg mb-6">
+                        <h3 class="font-medium mb-2">Detalhes do Erro:</h3>
+                        <p class="text-red-400"><%= error %></p>
+                    </div>
+
+                    <div class="bg-[#40444b] p-4 rounded-lg mb-6">
+                        <h3 class="font-medium mb-2">Dicas de Resolução:</h3>
+                        <ul class="list-disc list-inside text-gray-300 space-y-2">
+                            <li>Verifique se o token de utilizador está correto</li>
+                            <li>Certifique-se de que é membro de ambos os servidores</li>
+                            <li>Verifique se os IDs dos servidores estão corretos</li>
+                            <li>Tente novamente em alguns minutos se atingiu o limite de pedidos</li>
+                            <li>Algumas funcionalidades podem estar limitadas devido às definições de visibilidade do servidor</li>
+                        </ul>
+                    </div>
+
+                    <div class="flex justify-center space-x-4">
+                        <a href="/clone" class="bg-[#5865F2] hover:bg-[#4752C4] px-6 py-3 rounded-md font-medium transition-colors">
+                            Tentar Novamente
+                        </a>
+                        <a href="/" class="bg-[#40444b] hover:bg-[#36393f] px-6 py-3 rounded-md font-medium transition-colors">
+                            Voltar ao Início
+                        </a>
+                    </div>
+                </div>
+            <% } %>
+        </div>
+    </main>
+</body>
+</html>
