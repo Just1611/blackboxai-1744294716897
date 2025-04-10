@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Discord Server Cloner</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #36393f;
+            color: #dcddde;
+        }
+    </style>
+</head>
+<body>
+    <!-- Server List Sidebar -->
+    <div class="flex h-screen">
+        <!-- Server List -->
+        <div class="w-[72px] bg-[#202225] flex flex-col items-center py-3 space-y-2">
+            <!-- Home Button -->
+            <div class="w-12 h-12 bg-[#36393f] rounded-[24px] hover:rounded-[16px] transition-all duration-200 flex items-center justify-center cursor-pointer">
+                <i class="fas fa-discord text-[#dcddde]"></i>
+            </div>
+            <div class="w-8 h-[2px] bg-[#36393f] rounded-lg mx-auto"></div>
+            <!-- Server Icons -->
+            <div class="w-12 h-12 bg-[#36393f] rounded-[24px] hover:rounded-[16px] transition-all duration-200 flex items-center justify-center cursor-pointer">
+                <i class="fas fa-server text-[#dcddde]"></i>
+            </div>
+            <!-- Add Server Button -->
+            <div class="w-12 h-12 bg-[#36393f] rounded-[24px] hover:rounded-[16px] transition-all duration-200 flex items-center justify-center cursor-pointer">
+                <i class="fas fa-plus text-[#3ba55d]"></i>
+            </div>
+        </div>
+
+        <!-- Channel List -->
+        <div class="w-60 bg-[#2f3136]">
+            <div class="p-4">
+                <h2 class="text-white font-bold">Server Name</h2>
+            </div>
+            <!-- Channel Categories -->
+            <div class="px-2">
+                <div class="text-[#8e9297] text-xs font-semibold mt-4 px-2">
+                    TEXT CHANNELS
+                </div>
+                <!-- Channel List -->
+                <div class="mt-2">
+                    <div class="flex items-center px-2 py-1 text-[#8e9297] hover:text-[#dcddde] hover:bg-[#393c43] rounded cursor-pointer">
+                        <i class="fas fa-hashtag mr-2"></i>
+                        general
+                    </div>
+                    <div class="flex items-center px-2 py-1 text-[#8e9297] hover:text-[#dcddde] hover:bg-[#393c43] rounded cursor-pointer">
+                        <i class="fas fa-hashtag mr-2"></i>
+                        announcements
+                    </div>
+                </div>
+                <!-- Voice Channels -->
+                <div class="text-[#8e9297] text-xs font-semibold mt-4 px-2">
+                    VOICE CHANNELS
+                </div>
+                <div class="mt-2">
+                    <div class="flex items-center px-2 py-1 text-[#8e9297] hover:text-[#dcddde] hover:bg-[#393c43] rounded cursor-pointer">
+                        <i class="fas fa-volume-up mr-2"></i>
+                        General Voice
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Chat Area -->
+        <div class="flex-1 bg-[#36393f] flex flex-col">
+            <!-- Chat Header -->
+            <div class="h-12 border-b border-[#202225] flex items-center px-4">
+                <i class="fas fa-hashtag text-[#8e9297] mr-2"></i>
+                <span class="font-bold text-white">general</span>
+            </div>
+            <!-- Chat Messages -->
+            <div class="flex-1 overflow-y-auto p-4">
+                <!-- Messages will be dynamically added here -->
+            </div>
+            <!-- Message Input -->
+            <div class="p-4">
+                <div class="bg-[#40444b] rounded-lg p-4">
+                    <input type="text" placeholder="Message #general" class="w-full bg-transparent outline-none text-[#dcddde]">
+                </div>
+            </div>
+        </div>
+
+        <!-- Members List -->
+        <div class="w-60 bg-[#2f3136] p-4">
+            <div class="text-[#8e9297] text-xs font-semibold mb-4">MEMBERS — 1</div>
+            <!-- Online Members -->
+            <div class="flex items-center mb-2 text-[#8e9297] hover:text-[#dcddde]">
+                <div class="w-8 h-8 bg-[#36393f] rounded-full mr-2"></div>
+                <span>User1</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/script.js"></script>
+</body>
+</html>
