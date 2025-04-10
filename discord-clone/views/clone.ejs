@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clonar Servidor - Clonador de Servidor Discord</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-[#36393f] text-white font-[Inter] min-h-screen">
+    <nav class="bg-[#202225] p-4 fixed w-full top-0 z-50">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <i class="fab fa-discord text-2xl"></i>
+                <span class="text-xl font-bold">Clonador de Servidor Discord</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 pt-24 pb-12">
+        <div class="max-w-4xl mx-auto">
+            <div class="text-center mb-8">
+                <h1 class="text-4xl font-bold mb-4">Clone o Seu Servidor</h1>
+                <p class="text-gray-300 text-lg">Clone a estrutura do servidor incluindo canais, categorias e emojis sem necessitar de permissões especiais.</p>
+            </div>
+
+            <!-- Warning Alert -->
+            <div class="bg-yellow-500 bg-opacity-20 p-4 rounded-lg mb-8">
+                <div class="flex items-start">
+                    <div class="text-yellow-500 mr-3">
+                        <i class="fas fa-exclamation-triangle text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-yellow-500 font-medium mb-1">Aviso Importante!</h3>
+                        <p class="text-gray-300">
+                            Todos os canais existentes no servidor de destino serão apagados antes da clonagem. 
+                            Certifique-se de que pretende substituir completamente a estrutura atual.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Server Input Form -->
+            <div class="bg-[#2f3136] rounded-lg p-6 mb-8">
+                <form id="cloneForm" action="/clone" method="POST" class="space-y-6">
+                    <!-- User Token -->
+                    <div>
+                        <label class="block text-sm font-medium mb-2 flex items-center justify-between" for="userToken">
+                            <span>Token de Utilizador</span>
+                            <button type="button" class="text-xs text-[#5865F2] hover:underline" onclick="showTokenHelp()">
+                                Como obter o token?
+                            </button>
+                        </label>
+                        <div class="relative">
+                            <input 
+                                type="password" 
+                                id="userToken" 
+                                name="botToken" 
+                                required
+                                class="w-full px-4 py-3 rounded-md bg-[#40444b] border border-[#202225] focus:outline-none focus:border-[#5865F2] transition-colors"
+                                placeholder="Insira o seu token de utilizador"
+                                autocomplete="off"
+                            >
+                            <button type="button" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white" onclick="toggleTokenVisibility()">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Server IDs -->
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium mb-2" for="sourceServerId">
+                                Servidor de Origem
+                                <i class="fas fa-info-circle ml-1 text-gray-400" title="O servidor que deseja clonar"></i>
+                            </label>
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    id="sourceServerId" 
+                                    name="sourceServerId" 
+                                    required
+                                    class="w-full px-4 py-3 rounded-md bg-[#40444b] border border-[#202225] focus:outline-none focus:border-[#5865F2] transition-colors"
+                                    placeholder="ID do Servidor ou Link de Convite"
+                                >
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                                    <i class="fas fa-paste text-gray-400 hover:text-white cursor-pointer" onclick="pasteFromClipboard('sourceServerId')"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium mb-2" for="destServerId">
+                                Servidor de Destino
+                                <i class="fas fa-info-circle ml-1 text-gray-400" title="O servidor onde deseja criar a cópia"></i>
+                            </label>
+                            <div class="relative">
+                                <input 
+                                    type="text" 
+                                    id="destServerId" 
+                                    name="destServerId" 
+                                    required
+                                    class="w-full px-4 py-3 rounded-md bg-[#40444b] border border-[#202225] focus:outline-none focus:border-[#5865F2] transition-colors"
+                                    placeholder="ID do Servidor ou Link de Convite"
+                                >
+                                <div class="absolute right-3 top-1/2 -translate-y-1/2">
+                                    <i class="fas fa-paste text-gray-400 hover:text-white cursor-pointer" onclick="pasteFromClipboard('destServerId')"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Preview Section -->
+                    <div id="previewSection" class="hidden">
+                        <h3 class="text-lg font-medium mb-4">Pré-visualização do Servidor</h3>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-[#40444b] p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Servidor de Origem</h4>
+                                <div id="sourcePreview" class="text-sm text-gray-300">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+                            <div class="bg-[#40444b] p-4 rounded-lg">
+                                <h4 class="font-medium mb-2">Servidor de Destino</h4>
+                                <div id="destPreview" class="text-sm text-gray-300">
+                                    <!-- Will be populated by JavaScript -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Confirmation Checkbox -->
+                    <div class="flex items-center">
+                        <input 
+                            type="checkbox" 
+                            id="confirmClear" 
+                            required
+                            class="w-4 h-4 rounded text-[#5865F2] focus:ring-[#5865F2] bg-[#40444b] border-[#202225]"
+                        >
+                        <label class="ml-2 text-sm text-gray-300" for="confirmClear">
+                            Compreendo que todos os canais existentes no servidor de destino serão apagados
+                        </label>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        class="w-full bg-[#5865F2] hover:bg-[#4752C4] px-6 py-3 rounded-md font-medium transition-colors flex items-center justify-center space-x-2"
+                    >
+                        <i class="fas fa-clone"></i>
+                        <span>Iniciar Clonagem</span>
+                    </button>
+                </form>
+            </div>
+
+            <!-- Help Section -->
+            <div class="bg-[#2f3136] rounded-lg p-6">
+                <h3 class="text-lg font-medium mb-4">Guia Rápido</h3>
+                <div class="grid md:grid-cols-2 gap-6">
+                    <div>
+                        <h4 class="font-medium mb-2">Obter ID do Servidor</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300 text-sm">
+                            <li>Abra as Definições do Discord</li>
+                            <li>Vá para "Definições da Aplicação" > "Avançado"</li>
+                            <li>Ative o "Modo Desenvolvedor"</li>
+                            <li>Clique com botão direito no ícone do servidor > "Copiar ID"</li>
+                        </ol>
+                    </div>
+                    <div>
+                        <h4 class="font-medium mb-2">Usar Links de Convite</h4>
+                        <ol class="list-decimal list-inside space-y-2 text-gray-300 text-sm">
+                            <li>Clique com botão direito no nome do servidor</li>
+                            <li>Clique em "Convidar Pessoas"</li>
+                            <li>Crie um link de convite</li>
+                            <li>Cole o link completo aqui</li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Token Help Modal -->
+    <div id="tokenHelpModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-[#2f3136] p-6 rounded-lg max-w-lg w-full mx-4">
+            <h3 class="text-xl font-bold mb-4">Como Obter o Seu Token de Utilizador</h3>
+            <ol class="list-decimal list-inside space-y-3 text-gray-300 mb-6">
+                <li>Abra o Discord no seu navegador</li>
+                <li>Pressione <kbd class="bg-[#40444b] px-2 py-1 rounded">Ctrl+Shift+I</kbd> (Windows) ou <kbd class="bg-[#40444b] px-2 py-1 rounded">Cmd+Option+I</kbd> (Mac)</li>
+                <li>Vá para a aba "Network"</li>
+                <li>Clique em qualquer pedido para discord.com</li>
+                <li>Procure por "authorization" nos cabeçalhos do pedido</li>
+                <li>Copie o seu token</li>
+            </ol>
+            <div class="bg-yellow-500 bg-opacity-20 p-4 rounded-lg mb-6">
+                <h4 class="text-yellow-500 font-medium mb-2">Importante:</h4>
+                <p class="text-gray-300">Nunca partilhe o seu token com ninguém. Ele fornece acesso total à sua conta Discord.</p>
+            </div>
+            <button onclick="hideTokenHelp()" class="w-full bg-[#5865F2] hover:bg-[#4752C4] px-4 py-2 rounded-md font-medium transition-colors">
+                Entendi
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Token visibility toggle
+        function toggleTokenVisibility() {
+            const input = document.getElementById('userToken');
+            const icon = document.querySelector('.fa-eye');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                input.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Token help modal
+        function showTokenHelp() {
+            document.getElementById('tokenHelpModal').classList.remove('hidden');
+            document.getElementById('tokenHelpModal').classList.add('flex');
+        }
+
+        function hideTokenHelp() {
+            document.getElementById('tokenHelpModal').classList.add('hidden');
+            document.getElementById('tokenHelpModal').classList.remove('flex');
+        }
+
+        // Paste from clipboard
+        async function pasteFromClipboard(inputId) {
+            try {
+                const text = await navigator.clipboard.readText();
+                const input = document.getElementById(inputId);
+                input.value = text;
+                validateServerInput(input);
+            } catch (err) {
+                console.error('Falha ao ler a área de transferência:', err);
+            }
+        }
+
+        // Server ID/Invite link validation
+        function validateServerInput(input) {
+            let value = input.value.trim();
+            
+            const inviteLinkRegex = /discord\.gg\/[\w\d]+|discord\.com\/invite\/[\w\d]+/;
+            const serverIdRegex = /^[0-9]{17,20}$/;
+            
+            if (inviteLinkRegex.test(value)) {
+                input.classList.add('border-yellow-500');
+                showPreview(input.id, 'Servidor do Link de Convite');
+            } else if (serverIdRegex.test(value)) {
+                input.classList.remove('border-yellow-500');
+                showPreview(input.id, 'Servidor ' + value);
+            } else {
+                input.classList.add('border-red-500');
+            }
+        }
+
+        // Show preview section
+        function showPreview(inputId, serverName) {
+            const previewSection = document.getElementById('previewSection');
+            const previewDiv = inputId === 'sourceServerId' ? 
+                document.getElementById('sourcePreview') : 
+                document.getElementById('destPreview');
+            
+            previewSection.classList.remove('hidden');
+            previewDiv.innerHTML = `
+                <div class="flex items-center space-x-2">
+                    <i class="fas fa-server"></i>
+                    <span>${serverName}</span>
+                </div>
+            `;
+        }
+
+        // Form submission
+        document.getElementById('cloneForm').addEventListener('submit', function(e) {
+            const button = this.querySelector('button[type="submit"]');
+            button.disabled = true;
+            button.innerHTML = `
+                <i class="fas fa-spinner fa-spin"></i>
+                <span>A Clonar Servidor...</span>
+            `;
+        });
+
+        // Initialize input validation
+        document.getElementById('sourceServerId').addEventListener('input', function() {
+            validateServerInput(this);
+        });
+        document.getElementById('destServerId').addEventListener('input', function() {
+            validateServerInput(this);
+        });
+    </script>
+</body>
+</html>
