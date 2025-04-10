@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error - Discord Server Cloner</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body class="bg-[#36393f] text-white font-[Inter]">
+    <nav class="bg-[#202225] p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <a href="/" class="flex items-center space-x-2">
+                <i class="fab fa-discord text-2xl"></i>
+                <span class="text-xl font-bold">Discord Server Cloner</span>
+            </a>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 py-12">
+        <div class="max-w-2xl mx-auto">
+            <div class="bg-[#2f3136] rounded-lg p-6 text-center">
+                <div class="mb-6">
+                    <div class="w-24 h-24 bg-red-500 rounded-full mx-auto flex items-center justify-center">
+                        <i class="fas fa-exclamation-triangle text-4xl"></i>
+                    </div>
+                </div>
+
+                <h1 class="text-3xl font-bold mb-4">Oops! Something Went Wrong</h1>
+                <p class="text-gray-300 mb-6"><%= message %></p>
+
+                <% if (error && Object.keys(error).length !== 0) { %>
+                    <div class="bg-[#40444b] p-4 rounded-lg mb-6 text-left">
+                        <h3 class="font-medium mb-2">Error Details:</h3>
+                        <pre class="text-red-400 text-sm overflow-x-auto">
+<%= JSON.stringify(error, null, 2) %>
+                        </pre>
+                    </div>
+                <% } %>
+
+                <div class="flex justify-center space-x-4">
+                    <a href="/clone" class="bg-[#5865F2] hover:bg-[#4752C4] px-6 py-3 rounded-md font-medium transition-colors">
+                        Back to Cloner
+                    </a>
+                    <a href="/" class="bg-[#40444b] hover:bg-[#36393f] px-6 py-3 rounded-md font-medium transition-colors">
+                        Go to Home
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-8 bg-[#2f3136] rounded-lg p-6">
+                <h3 class="text-lg font-medium mb-4">Troubleshooting Steps</h3>
+                <ul class="list-disc list-inside space-y-2 text-gray-300">
+                    <li>Check your internet connection</li>
+                    <li>Verify that Discord's services are operational</li>
+                    <li>Ensure your bot token is valid and has the required permissions</li>
+                    <li>Confirm that the server IDs are correct</li>
+                    <li>Try refreshing the page and attempting the operation again</li>
+                </ul>
+            </div>
+        </div>
+    </main>
+</body>
+</html>
